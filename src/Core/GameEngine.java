@@ -1,6 +1,8 @@
 package Core;
 
 import java.util.LinkedList;
+import java.util.Random;
+
 import Client.PlayerClient;
 import Signals.*;
 import Entities.*;
@@ -10,9 +12,11 @@ import Entities.*;
  */
 public class GameEngine {
     public GameWorld gameWorld;
+    public Random rnd;
 
     public GameEngine(GameWorld world) {
         this.gameWorld = world;
+        rnd = new Random();
 
     }
 
@@ -28,9 +32,17 @@ public class GameEngine {
         }
        
         checkCollisions();
+        respawnBonus();
     }
-
-    public void moveSnake(Snake snake, SnakeDirections direction) {
+    public void respawnBonus(){
+        if (gameWorld.bonuses == null){
+            gameWorld.bonuses = new LinkedList<>();
+        }
+        if (gameWorld.bonuses.isEmpty()){
+            gameWorld.addBonus(rnd.nextInt(gameWorld.mapWidth - 1), rnd.nextInt(gameWorld.mapHeight - 1), BonusType.APPLE);
+        }
+    }
+    private void moveSnake(Snake snake, SnakeDirections direction) {
         snake.move(direction);
     }
 
@@ -96,6 +108,9 @@ public class GameEngine {
             }
         }
         return collisionSnakes;
+
+    }
+    public void update_engine_state(){
 
     }
 

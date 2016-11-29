@@ -5,4 +5,5 @@ package Core;
  */
 public enum GameType {
     TEST1,
+    USER,
 }

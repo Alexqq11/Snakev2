@@ -8,11 +8,13 @@ public class ClientDirectionSignal  extends Signal{
     private int snakeID;
     private int key;
     private SnakeDirections direction;
+    private SignalType type ;
 
     public ClientDirectionSignal(int clientID, int key ,SnakeDirections direction) {
         this.direction = direction;
         this.snakeID = clientID;
         this.key = key;
+        this.type = SignalType.CDRS;
 
     }
 

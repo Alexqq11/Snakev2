@@ -5,6 +5,7 @@ import Signals.*;
 import Entities.*;
 import org.junit.Test;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -16,7 +17,19 @@ import static org.junit.Assert.*;
  */
 
 public class TestSnakeClass {
+    @Test
+    public void APItest() {
+        //default snake position 10 10
+        API api = new API(GameType.TEST1);
 
+
+
+        for (int i = 0; i < 5; i++) {
+            api.sendMoveSnakeEvent(1,1001,SnakeDirections.DOWN);
+        }
+        SnakeInfo snake = api.getSnakeInformation(1);//engine.gameWorld.snakes.getFirst();
+        assertTrue(snake.snakePoints.getFirst().y == 15);//
+    }
 
     @Test
     public void testCorrectSnakeMovementsDownInOneFrame() {

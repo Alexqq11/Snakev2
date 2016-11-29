@@ -19,6 +19,9 @@ public class GameWorld {
         this.map = new char[mapHeight][mapWidth];
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
+        this.snakes = new LinkedList<>();
+        this.bonuses = new LinkedList<>();
+        this.clients = new LinkedList<>();
         this.clients = clients;
         initSnakesForPlayerClients();
         updateMapObjects();
@@ -49,6 +52,7 @@ public class GameWorld {
     }
 
     protected void addBonus(int x , int y , BonusType type) {
+        if (this.bonuses  != null && this.bonuses.isEmpty())
         bonuses.add(new Bonus( x, y, type ));
     }
     protected void addClient(PlayerClient client){
