@@ -138,20 +138,7 @@ public class Game extends Canvas implements Runnable {
         }
     }
 
-   /* public Sprite getSprite(String path) {
-        BufferedImage sourceImage = null;
 
-        try {
-            URL url = this.getClass().getClassLoader().getResource(path);
-            sourceImage = ImageIO.read(URL.class.getResource("C:\\Users\\Alexqq11\\Documents\\GitHub\\Snake_V2\\src\\testGUI\\man.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        Sprite sprite = new Sprite(Toolkit.getDefaultToolkit().createImage(sourceImage.getSource()));
-
-        return sprite;
-    }*/
 
     public static void main(String[] args) {
         Game game = new Game();
