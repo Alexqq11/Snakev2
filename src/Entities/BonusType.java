@@ -7,5 +7,6 @@ public enum BonusType {
     APPLE,
     PEACH,
     CANDY,
-    TOADSTOOL;
+    MUSHROOM,
+    WALL
 }

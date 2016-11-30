@@ -11,7 +11,7 @@ public class Bonus extends Entity {
         this.y = y;
         bonusType = type;
         initBonusConfig(type);
-        initConfig(BonusType.APPLE);
+        initConfig(type);
     }
 
     private void initBonusConfig(BonusType type) {
@@ -24,9 +24,15 @@ public class Bonus extends Entity {
     private void initConfig(BonusType bonusType) {
         if (BonusType.APPLE == bonusType) {
             config = new HashMap<>();
-            config.put(Effects.DIE, 0.0);
+            config.put(Effects.DEATH, 0.0);
             config.put(Effects.GROWTH, 1.0);
         }
+        else{ //(BonusType.WALL == bonusType){
+            config = new HashMap<>();
+            config.put(Effects.DEATH, 1.0);
+            config.put(Effects.GROWTH, 0.0);
+        }
+
     }
     public BonusInfo getBonusInfo(){
         return new BonusInfo(x, y, bonusType);

@@ -2,9 +2,7 @@ package testGUI;
 
 import  Core.API;
 import Core.GameType;
-import Entities.BonusInfo;
-import Entities.SnakeDirections;
-import Entities.SnakeInfo;
+import Entities.*;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -31,6 +29,7 @@ public class Game extends Canvas implements Runnable {
     private boolean rightPressed = false;
     private boolean downPressed = false;
     private boolean upPressed = false;
+    private boolean gameLose = false;
 
     public static Sprite hero;
     private static int x = 0;
@@ -50,14 +49,26 @@ public class Game extends Canvas implements Runnable {
 
         init();
 
-        while(running) {
+        while (running) {
             delta = System.currentTimeMillis() - lastTime;
             lastTime = System.currentTimeMillis();
             render();
             update(delta);
             snakes = api.getSnakesInformation();
             bonuses = api.getBonusesInformation();
+            for (SnakeInfo snake : snakes) {
+                gameLose = !snake.isAlive;
+            }
+            if(gameLose){
+                if (upPressed){
+                    api = new API(GameType.USER);
+                    snakes = api.getSnakesInformation();
+                    bonuses = api.getBonusesInformation();
+                    gameLose = false;
+                }
+            }
             tick++;
+
         }
     }
 
@@ -92,20 +103,34 @@ public class Game extends Canvas implements Runnable {
         g.setColor(new Color(20,100,10));
         g.fillRect(0, 0, getWidth(), getHeight());
         g.setColor(Color.BLACK);
-        for (int i = 0; i < WIDTH / 10; i++){
+        for (int i = 0; i <= WIDTH / 10; i++){
             g.drawLine(i*10, 0, i*10 , HEIGHT);
         }
-        for(int i = 0; i < HEIGHT /10; i++){
+        for(int i = 0; i <= HEIGHT /10; i++){
             g.drawLine(0, i*10, WIDTH, i *10);
         }
-        for (SnakeInfo snake : snakes) {
-            for (Point point : snake.snakePoints) {
-                drawEntity(g, point, Color.cyan);
+        if (!gameLose) {
+            for (SnakeInfo snake : snakes) {
+                for (Point point : snake.snakePoints) {
+                    drawEntity(g, point, Color.cyan);
+                }
+            }
+            for (BonusInfo bonusInfo : bonuses){
+                if (bonusInfo.bonusType == BonusType.APPLE)
+                    drawEntity(g, new Point(bonusInfo.x, bonusInfo.y), Color.orange);
+                else{
+                    drawEntity(g, new Point(bonusInfo.x, bonusInfo.y), Color.gray);
+                }
             }
         }
-        for (BonusInfo bonusInfo : bonuses){
-            drawEntity(g, new Point(bonusInfo.x, bonusInfo.y), Color.orange);
+        else{
+            g.setColor(Color.BLACK);
+            g.fillRect(0, 0, getWidth(), getHeight());
+            g.setColor(Color.WHITE);
+            g.drawString("GAME OVER", 150 , 100);
+            g.drawString("PRESS UP TO START NEW GAME", 100 , 120);
         }
+
        // hero.draw(g, x, y);
         g.dispose();
         bs.show();

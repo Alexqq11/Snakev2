@@ -23,7 +23,7 @@ public class API {
      * формате данных
      * **/
     public Client.ClientInfo getClientInformation(int id){
-        ClientInfo  info = null;
+        ClientInfo info = null;
         for (PlayerClient client : this.pull.gameWorld.clients){
             if (client.getId() == id){
                 info = client.getClientInfo();
@@ -86,11 +86,11 @@ public class API {
      * соответствующей по id змеи и специальному ключу пользователя.
      */
     public void sendMoveSnakeEvent(int id , int key, SnakeDirections direction){
-        pull.SignalHandler(new ClientDirectionSignal(id , key, direction));
+        pull.HandleSignal(new ClientDirectionSignal(id , key, direction));
     }
     /**
      *отправить движку операцию связанную с клиентом
-     * (connect disconect , stop game , start game , new game )
+     * (connect disconnect , stop game , start game , new game )
      */
     public void sendClientGameEvent(){}
 

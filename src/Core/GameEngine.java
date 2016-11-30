@@ -20,11 +20,11 @@ public class GameEngine {
 
     }
 
-    public void handlClientGameSignal(ClientGameSignal signal){
-        // may be pause or disconect game start // game ower
+    public void handleClientGameSignal(ClientGameSignal signal){
+        // may be pause or disconnect game start // game over
     }
 
-    public void handlClientMovement(ClientDirectionSignal signal){//LinkedList<ClientDirectionSignal> clientDirectionSignals) {
+    public void handleClientMovement(ClientDirectionSignal signal){    //LinkedList<ClientDirectionSignal> clientDirectionSignals) {
         for (Snake snake : gameWorld.snakes){
             if (snake.getId() == signal.getId() && snake.getKey() == signal.getKey()) {
                 moveSnake(snake, signal.getDirection());
@@ -35,10 +35,10 @@ public class GameEngine {
         respawnBonus();
     }
     public void respawnBonus(){
-        if (gameWorld.bonuses == null){
+       /* if (gameWorld.bonuses == null){
             gameWorld.bonuses = new LinkedList<>();
-        }
-        if (gameWorld.bonuses.isEmpty()){
+        }*/
+        if (gameWorld.bonuses.size()  < 3){
             gameWorld.addBonus(rnd.nextInt(gameWorld.mapWidth - 1), rnd.nextInt(gameWorld.mapHeight - 1), BonusType.APPLE);
         }
     }
@@ -47,18 +47,20 @@ public class GameEngine {
     }
 
     private void checkCollisions() {
-        checkCollisionsSnakesWithBonus();
+        checkSnakeCollisionsWithBonus();
         processingSnakesCollision();
     }
 
 
-    private void checkCollisionsSnakesWithBonus() {
+    private void checkSnakeCollisionsWithBonus() {
         for (Snake snake : gameWorld.snakes) {
             for (Bonus bonus : gameWorld.bonuses) {
                 if (snake.positionEquals(bonus)) {
                     snake.applyEffects(bonus.getEffects());
                     clientUpdateScore(snake.getId());
-                    gameWorld.bonuses.remove(bonus); // attention  wall can be removed
+                    if(bonus.bonusType != BonusType.WALL){
+                    gameWorld.bonuses.remove(bonus);
+                    } // attention  wall can be removed
                 }
             }
         }
@@ -68,6 +70,7 @@ public class GameEngine {
         for (PlayerClient client : gameWorld.clients) {
             if (client.getId() == id) {
                 client.lose();
+
             }
         }
     }
@@ -85,7 +88,9 @@ public class GameEngine {
     private void processingSnakesCollision() {
         LinkedList<Snake> deadSnakes = getCollisionSnakesWithSnakes();
         for (Snake deadSnake : deadSnakes) {
+            deadSnake.die();
             clientGameLose(deadSnake.getId());
+
         }
 
     }
@@ -95,11 +100,12 @@ public class GameEngine {
         for (Snake snake : gameWorld.snakes) {
             for (Snake undercheck_snake : gameWorld.snakes) {
                 if (snake != undercheck_snake) {
+                    //caution check enity for collision methood
                     if (snake.positionEquals(undercheck_snake) || undercheck_snake.checkEntityForCollision(snake) || (!snake.isAlive())) {
                         collisionSnakes.add(snake);
                     }
                 } else {
-                    if (undercheck_snake.checkEntityForCollision(snake)) {
+                    if (undercheck_snake.checkSelfCollision()) {
                         collisionSnakes.add(snake);
                     }
 

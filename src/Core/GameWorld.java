@@ -25,13 +25,14 @@ public class GameWorld {
         this.clients = clients;
         initSnakesForPlayerClients();
         updateMapObjects();
+        initStaticWall();
     }
 
     public void updateMapObjects() {
         this.map = new char[mapHeight][mapWidth];
         for (Snake snake : this.snakes) {
             setEntity(snake.snakeParts, '*');
-            map[snake.y][snake.x] = '@'; // todo make not static textures//
+            map[snake.y][snake.x] = '@'; // todo make non static textures//
         }
         setEntity(this.bonuses, '$');
     }
@@ -50,9 +51,13 @@ public class GameWorld {
         }
 
     }
+    private void initStaticWall(){
+        addBonus(2,2,BonusType.WALL);
+        addBonus(3,2, BonusType.WALL);
+    }
 
     protected void addBonus(int x , int y , BonusType type) {
-        if (this.bonuses  != null && this.bonuses.isEmpty())
+        //if (this.bonuses  != null && this.bonuses.isEmpty())
         bonuses.add(new Bonus( x, y, type ));
     }
     protected void addClient(PlayerClient client){

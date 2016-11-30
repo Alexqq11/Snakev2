@@ -10,7 +10,7 @@ public class Entity {
     public int mapHeight;
     private int id;
 
-    public void rining() {
+    public void loop() {
         this.x = (this.x + mapWidth) % mapWidth;
         this.y = (this.y + mapHeight) % mapHeight;
     }

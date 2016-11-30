@@ -1,4 +1,3 @@
-import java.util.LinkedList;
 import Core.*;
 import  Signals.*;
 import  Entities.*;
@@ -18,7 +17,7 @@ public class Main {
 
         ClientDirectionSignal signal = new ClientDirectionSignal(1,1001, SnakeDirections.DOWN);
         for (int i = 0; i < 20; i++) {
-            engine.handlClientMovement(signal);
+            engine.handleClientMovement(signal);
             engine.gameWorld.updateMapObjects();
             com.updateMap(engine.gameWorld);
             com.drawWorldState();

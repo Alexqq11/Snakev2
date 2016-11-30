@@ -5,10 +5,6 @@ import Signals.*;
 import Entities.*;
 import org.junit.Test;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.LinkedList;
-
 import static org.junit.Assert.*;
 
 
@@ -39,7 +35,7 @@ public class TestSnakeClass {
         GameEngine engine = game.engine;
         ClientDirectionSignal  signal = new ClientDirectionSignal(1,1001, SnakeDirections.DOWN);
         for (int i = 0; i < 5; i++) {
-            engine.handlClientMovement(signal);
+            engine.handleClientMovement(signal);
         }
         Snake snake = engine.gameWorld.snakes.getFirst();
         assertTrue(snake.x == 10 && snake.y == 15);
@@ -53,7 +49,7 @@ public class TestSnakeClass {
         GameEngine engine = game.engine;
         ClientDirectionSignal  signal = new ClientDirectionSignal(1,1001, SnakeDirections.DOWN);
         for (int i = 0; i < 20; i++) {
-            engine.handlClientMovement(signal);
+            engine.handleClientMovement(signal);
         }
         Snake snake = engine.gameWorld.snakes.getFirst();
         assertTrue(snake.x == 10 && snake.y == 10);
@@ -67,7 +63,7 @@ public class TestSnakeClass {
         GameEngine engine = game.engine;
         ClientDirectionSignal  signal = new ClientDirectionSignal(1,1001, SnakeDirections.UP);
         for (int i = 0; i < 5; i++) {
-            engine.handlClientMovement(signal);
+            engine.handleClientMovement(signal);
         }
         Snake snake = engine.gameWorld.snakes.getFirst();
         assertTrue(snake.x == 10 && snake.y == 5);
@@ -81,7 +77,7 @@ public class TestSnakeClass {
         GameEngine engine = game.engine;
         ClientDirectionSignal  signal = new ClientDirectionSignal(1,1001, SnakeDirections.UP);
         for (int i = 0; i < 20; i++) {
-            engine.handlClientMovement(signal);
+            engine.handleClientMovement(signal);
         }
         Snake snake = engine.gameWorld.snakes.getFirst();
         assertTrue(snake.x == 10 && snake.y == 10);
@@ -95,7 +91,7 @@ public class TestSnakeClass {
         GameEngine engine = game.engine;
         ClientDirectionSignal  signal = new ClientDirectionSignal(1,1001, SnakeDirections.LEFT);
         for (int i = 0; i < 5; i++) {
-            engine.handlClientMovement(signal);
+            engine.handleClientMovement(signal);
         }
         Snake snake = engine.gameWorld.snakes.getFirst();
         assertTrue(snake.x == 5 && snake.y == 10);
@@ -109,7 +105,7 @@ public class TestSnakeClass {
         GameEngine engine = game.engine;
         ClientDirectionSignal  signal = new ClientDirectionSignal(1,1001, SnakeDirections.LEFT);
         for (int i = 0; i < 20; i++) {
-            engine.handlClientMovement(signal);
+            engine.handleClientMovement(signal);
         }
         Snake snake = engine.gameWorld.snakes.getFirst();
         assertTrue(snake.x == 10 && snake.y == 10);
@@ -123,7 +119,7 @@ public class TestSnakeClass {
         GameEngine engine = game.engine;
         ClientDirectionSignal  signal = new ClientDirectionSignal(1,1001, SnakeDirections.RIGHT);
         for (int i = 0; i < 11; i++) {
-            engine.handlClientMovement(signal);
+            engine.handleClientMovement(signal);
         }
         Snake snake = engine.gameWorld.snakes.getFirst();
         assertTrue(snake.x == 10 && snake.y == 10);
@@ -137,11 +133,11 @@ public class TestSnakeClass {
         GameEngine engine = game.engine;
         ClientDirectionSignal  signal = new ClientDirectionSignal(1,1001, SnakeDirections.UP);
         for (int i = 0; i < 19; i++) {
-            engine.handlClientMovement(signal);
+            engine.handleClientMovement(signal);
         }
         signal = new ClientDirectionSignal(1, 1001, SnakeDirections.RIGHT);
         for (int i = 0; i < 8; i++) {
-            engine.handlClientMovement(signal);
+            engine.handleClientMovement(signal);
         }
         Snake snake = engine.gameWorld.snakes.getFirst();
         assertTrue(snake.x == 18 && snake.y == 11);
@@ -161,7 +157,7 @@ public class TestSnakeClass {
         int amountOfBonuses = engine.gameWorld.bonuses.size();
         int startLength = snake.getLength();
         for (int i = 0; i < 5; i++) {
-            engine.handlClientMovement(signal);
+            engine.handleClientMovement(signal);
         }
         assertTrue(snake.getLength() != startLength && engine.gameWorld.bonuses.size() == amountOfBonuses - 1);
     }
@@ -178,7 +174,7 @@ public class TestSnakeClass {
         int amountOfBonuses = engine.gameWorld.bonuses.size();
         int startLength = snake.getLength();
         for (int i = 0; i < 5; i++) {
-            engine.handlClientMovement(signal);
+            engine.handleClientMovement(signal);
         }
         assertTrue(snake.getLength() == startLength + 1 && engine.gameWorld.bonuses.size() == amountOfBonuses - 1);
     }
@@ -191,19 +187,19 @@ public class TestSnakeClass {
         GameEngine engine = game.engine;
         ClientDirectionSignal  signal = new ClientDirectionSignal(1,1001, SnakeDirections.DOWN);
         for (int i = 0; i < 3; i++) {
-            engine.handlClientMovement(signal);
+            engine.handleClientMovement(signal);
         }
         signal = new ClientDirectionSignal(1, 1001, SnakeDirections.RIGHT);
         for (int i = 0; i < 1; i++) {
-            engine.handlClientMovement(signal);
+            engine.handleClientMovement(signal);
         }
         signal = new ClientDirectionSignal(1, 1001, SnakeDirections.UP);
         for (int i = 0; i < 1; i++) {
-            engine.handlClientMovement(signal);
+            engine.handleClientMovement(signal);
         }
         signal = new ClientDirectionSignal(1, 1001, SnakeDirections.LEFT);
         for (int i = 0; i < 1; i++) {
-            engine.handlClientMovement(signal);
+            engine.handleClientMovement(signal);
         }
         Snake snake = engine.gameWorld.snakes.getFirst();
         assertFalse(game.gameWorld.clients.getFirst().getStatus());
@@ -217,11 +213,11 @@ public class TestSnakeClass {
         GameEngine engine = game.engine;
         ClientDirectionSignal  signal = new ClientDirectionSignal(1,1001, SnakeDirections.UP);
         for (int i = 0; i < 9; i++) {
-            engine.handlClientMovement(signal);
+            engine.handleClientMovement(signal);
         }
         signal = new ClientDirectionSignal(1,1001, SnakeDirections.LEFT);
         for (int i = 0; i < 9; i++) {
-            engine.handlClientMovement(signal);
+            engine.handleClientMovement(signal);
         }
         Snake snake = engine.gameWorld.snakes.getFirst();
         assertFalse(snake.isSnakeAlive());
@@ -236,11 +232,11 @@ public class TestSnakeClass {
         GameEngine engine = game.engine;
         ClientDirectionSignal  signal = new ClientDirectionSignal(1,1001, SnakeDirections.UP);
         for (int i = 0; i < 9; i++) {
-            engine.handlClientMovement(signal);
+            engine.handleClientMovement(signal);
         }
         signal = new ClientDirectionSignal(1, 1001, SnakeDirections.LEFT);
         for (int i = 0; i < 9; i++) {
-            engine.handlClientMovement(signal);
+            engine.handleClientMovement(signal);
         }
         Snake snake = engine.gameWorld.snakes.getFirst();
         assertFalse(game.gameWorld.clients.getFirst().getStatus());

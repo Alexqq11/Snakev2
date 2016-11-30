@@ -19,7 +19,7 @@ public class GameInit {
         // load from file format
 
     }
-    public void applyGameConfiguration(int mapWidth,int  mapHeight){
+    public void applyGameConfiguration(int mapWidth, int mapHeight){
         // make with user args
         LinkedList<PlayerClient> clients = new LinkedList<>();
         clients.add(new PlayerClient(10,10, 1)); // add one obstacle and bonus
@@ -34,15 +34,15 @@ public class GameInit {
         this.gameWorld = new GameWorld(mapWidth, mapHeight, clients);
         this.engine = new GameEngine(this.gameWorld);
     }
-    public void SignalHandler(ClientDirectionSignal signal){
+    public void HandleSignal(ClientDirectionSignal signal){
         //System.out.print("blya");
-        engine.handlClientMovement(signal);
+        engine.handleClientMovement(signal);
         /*if (signal.getType() == SignalType.CDRS){
             System.out.println("huya");
-            engine.handlClientMovement((ClientDirectionSignal)signal); // think with it
+            engine.handleClientMovement((ClientDirectionSignal)signal); // think with it
         }
         else if (signal.getType() == SignalType.CGS){
-            engine.handlClientGameSignal((ClientGameSignal) signal);
+            engine.handleClientGameSignal((ClientGameSignal) signal);
         }*/
 
     }

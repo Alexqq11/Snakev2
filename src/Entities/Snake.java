@@ -44,7 +44,7 @@ public class Snake extends Entity {
         if (entityEffects.get(Effects.GROWTH) != 0) {
             this.snakeParts.addLast(new SnakePart(snakeParts.getLast().x + 1, snakeParts.getLast().y + 1));
         }
-        if (entityEffects.get(Effects.DIE) != 0) {
+        if (entityEffects.get(Effects.DEATH) != 0) {
             this.isAlive = false;
         }
     }
@@ -63,7 +63,20 @@ public class Snake extends Entity {
             this.length = snakeParts.size();
         }
     }
-
+    public boolean checkSelfCollision(){
+        SnakePart snakeHead  = snakeParts.getFirst();
+        boolean isCollised = false;
+        if (snakeParts.size() > 3) {
+            for (int i = 4; i < snakeParts.size(); i++) {
+                if (snakeHead.positionEquals(snakeParts.get(i))) {
+                    isCollised = true;
+                    break;
+                }
+            }
+        }
+        return isCollised;
+    }
+    /* something boolshit*/
     public boolean checkEntityForCollision(Entity entity) {
         for (SnakePart part : this.snakeParts) {
             if (part.positionEquals(entity)) {
@@ -71,7 +84,7 @@ public class Snake extends Entity {
             }
         }
         return false;
-    }
+    }/**/
 
     public void move(SnakeDirections direction) {
         switch (direction) {
@@ -100,7 +113,7 @@ public class Snake extends Entity {
                 }
                 break;
         }
-        rining();
+        loop();
         updateSnakeParts();
     }
 
@@ -122,6 +135,9 @@ public class Snake extends Entity {
 
     public boolean isAlive() {
         return this.isAlive;
+    }
+    public void die(){
+        isAlive = false;
     }
 
 }

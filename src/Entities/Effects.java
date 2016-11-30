@@ -4,14 +4,13 @@ package Entities;
  * Created by Alexqq11 on 21.10.2016.
  */
 public enum Effects {
-    POINTS,
+    SCORE,
     ENERGY,
     SPEED,
-    FROZE,
+    FROZEN,
     POISON,
     GROWTH,
     HUNGER,
-    DAZE,
-    DIE,
-    SELFTEXTURE
+    STUNNING,
+    DEATH,
 }
