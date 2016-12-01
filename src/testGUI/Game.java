@@ -7,6 +7,8 @@ import Entities.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -31,7 +33,10 @@ public class Game extends Canvas implements Runnable {
     private boolean upPressed = false;
     private boolean gameLose = false;
 
-    public static Sprite hero;
+    private MouseAction mouseAction;
+
+    private Menu menu;
+
     private static int x = 0;
     private static int y = 0;
     private API api;
@@ -44,16 +49,14 @@ public class Game extends Canvas implements Runnable {
     }
 
     public void run() {
-        long lastTime = System.currentTimeMillis();
-        long delta;
 
         init();
 
         while (running) {
-            delta = System.currentTimeMillis() - lastTime;
-            lastTime = System.currentTimeMillis();
+
             render();
-            update(delta);
+            update();
+
             snakes = api.getSnakesInformation();
             bonuses = api.getBonusesInformation();
             for (SnakeInfo snake : snakes) {
@@ -74,11 +77,12 @@ public class Game extends Canvas implements Runnable {
 
     public void init() {
         addKeyListener(new KeyInputHandler());
-        hero = new Sprite();
+        addMouseListener(new MouseInputHandler());
+        mouseAction = new MouseAction(new Point(-1, -1), false);
         api = new API(GameType.USER);
         snakes = api.getSnakesInformation();
         bonuses = api.getBonusesInformation();
-       // hero = getSprite("C:\\Users\\Alexqq11\\Documents\\GitHub\\Snake_V2\\src\\testGUI\\man.png");
+
     }
     public void drawEntity(Graphics g, Point entity, Color color) {
         int width = 10;
@@ -137,7 +141,7 @@ public class Game extends Canvas implements Runnable {
 
     }
 
-    public void update(long delta) {
+    public void update() {
         if (tick > 500) {
             /*if (api == null) {
                 return;
@@ -162,21 +166,50 @@ public class Game extends Canvas implements Runnable {
             tick  = 0;
         }
     }
-
-
-
-    public static void main(String[] args) {
-        Game game = new Game();
-        game.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-        JFrame frame = new JFrame(Game.NAME);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(new BorderLayout());
-        frame.add(game, BorderLayout.CENTER);
-        frame.pack();
-        frame.setResizable(false);
-        frame.setVisible(true);
-        game.start();
+    protected class MouseAction{
+        Point location;
+        boolean click;
+        MouseAction(Point location, boolean click){
+            this.location = location;
+            this.click = click;
+        }
+        void update(Point location,boolean click){
+            this.location = location;
+            this.click = click;
+        }
     }
+
+    private class MouseInputHandler implements MouseListener{
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            if( mouseAction != null)
+            mouseAction.update(e.getPoint(), true);
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            if (mouseAction != null)
+            mouseAction.update(e.getPoint(), false);
+
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+
+        }
+    }
+
 
     private class KeyInputHandler extends KeyAdapter {
         public void keyPressed(KeyEvent e) {
