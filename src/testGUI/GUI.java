@@ -8,7 +8,7 @@ import java.awt.*;
  */
 public class GUI {
     public static void main(String[] args) {
-        int WIDTH  = 400;
+        int WIDTH  = 550;
         int HEIGHT = 300;
         Game game = new Game();
         game.setPreferredSize(new Dimension(WIDTH, HEIGHT));

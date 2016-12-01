@@ -5,18 +5,9 @@ import Core.GameType;
 import Entities.*;
 
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.net.URL;
 import java.util.LinkedList;
-
-import javax.imageio.ImageIO;
-import javax.swing.JFrame;
 
 public class Game extends Canvas implements Runnable {
     private static final long serialVersionUID = 1L;
@@ -32,10 +23,11 @@ public class Game extends Canvas implements Runnable {
     private boolean downPressed = false;
     private boolean upPressed = false;
     private boolean gameLose = false;
+    private boolean gameRunned = false;
 
     private MouseAction mouseAction;
 
-    private Menu menu;
+    private MainMenu mainMenu;
 
     private static int x = 0;
     private static int y = 0;
@@ -77,8 +69,10 @@ public class Game extends Canvas implements Runnable {
 
     public void init() {
         addKeyListener(new KeyInputHandler());
+        addMouseMotionListener(new MouseMotionHandler());
         addMouseListener(new MouseInputHandler());
         mouseAction = new MouseAction(new Point(-1, -1), false);
+        mainMenu = new MainMenu(getWidth(), getHeight(), this.mouseAction);
         api = new API(GameType.USER);
         snakes = api.getSnakesInformation();
         bonuses = api.getBonusesInformation();
@@ -104,35 +98,41 @@ public class Game extends Canvas implements Runnable {
         }
         Graphics g = bs.getDrawGraphics();
 
-        g.setColor(new Color(20,100,10));
-        g.fillRect(0, 0, getWidth(), getHeight());
-        g.setColor(Color.BLACK);
-        for (int i = 0; i <= WIDTH / 10; i++){
-            g.drawLine(i*10, 0, i*10 , HEIGHT);
-        }
-        for(int i = 0; i <= HEIGHT /10; i++){
-            g.drawLine(0, i*10, WIDTH, i *10);
-        }
-        if (!gameLose) {
-            for (SnakeInfo snake : snakes) {
-                for (Point point : snake.snakePoints) {
-                    drawEntity(g, point, Color.cyan);
-                }
-            }
-            for (BonusInfo bonusInfo : bonuses){
-                if (bonusInfo.bonusType == BonusType.APPLE)
-                    drawEntity(g, new Point(bonusInfo.x, bonusInfo.y), Color.orange);
-                else{
-                    drawEntity(g, new Point(bonusInfo.x, bonusInfo.y), Color.gray);
-                }
-            }
-        }
-        else{
-            g.setColor(Color.BLACK);
+        if (gameRunned) {
+            g.setColor(new Color(20, 100, 10));
             g.fillRect(0, 0, getWidth(), getHeight());
-            g.setColor(Color.WHITE);
-            g.drawString("GAME OVER", 150 , 100);
-            g.drawString("PRESS UP TO START NEW GAME", 100 , 120);
+            g.setColor(Color.BLACK);
+            for (int i = 0; i <= WIDTH / 10; i++) {
+                g.drawLine(i * 10, 0, i * 10, HEIGHT);
+            }
+            for (int i = 0; i <= HEIGHT / 10; i++) {
+                g.drawLine(0, i * 10, WIDTH, i * 10);
+            }
+            if (!gameLose) {
+                for (SnakeInfo snake : snakes) {
+                    for (Point point : snake.snakePoints) {
+                        drawEntity(g, point, Color.cyan);
+                    }
+                }
+                for (BonusInfo bonusInfo : bonuses) {
+                    if (bonusInfo.bonusType == BonusType.APPLE)
+                        drawEntity(g, new Point(bonusInfo.x, bonusInfo.y), Color.orange);
+                    else {
+                        drawEntity(g, new Point(bonusInfo.x, bonusInfo.y), Color.gray);
+                    }
+                }
+            } else {
+                g.setColor(Color.BLACK);
+                g.fillRect(0, 0, getWidth(), getHeight());
+                g.setColor(Color.WHITE);
+                g.drawString("GAME OVER", 150, 100);
+                g.drawString("PRESS UP TO START NEW GAME", 100, 120);
+            }
+        }else{
+            mainMenu.render(g);
+            if(mainMenu.getNewGameButtonClickedState()){
+                gameRunned = true;
+            }
         }
 
        // hero.draw(g, x, y);
@@ -178,8 +178,20 @@ public class Game extends Canvas implements Runnable {
             this.click = click;
         }
     }
+    private  class MouseMotionHandler implements  MouseMotionListener {
 
-    private class MouseInputHandler implements MouseListener{
+        @Override
+        public void mouseDragged(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseMoved(MouseEvent e) {
+            if (mouseAction != null)
+                mouseAction.update(e.getPoint(), false);
+        }
+    }
+    private class MouseInputHandler implements MouseListener {
 
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -194,8 +206,7 @@ public class Game extends Canvas implements Runnable {
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            if (mouseAction != null)
-            mouseAction.update(e.getPoint(), false);
+
 
         }
 
