@@ -28,6 +28,7 @@ public class Game extends Canvas implements Runnable {
     private MouseAction mouseAction;
 
     private MainMenu mainMenu;
+    private UniversalMenu mmainMenu;
 
     private static int x = 0;
     private static int y = 0;
@@ -73,6 +74,13 @@ public class Game extends Canvas implements Runnable {
         addMouseListener(new MouseInputHandler());
         mouseAction = new MouseAction(new Point(-1, -1), false);
         mainMenu = new MainMenu(getWidth(), getHeight(), this.mouseAction);
+        LinkedList<String> buttonNames = new LinkedList<>();
+        buttonNames.add("NEW GAME");
+        buttonNames.add("SETTINGS");
+        buttonNames.add("HELP");
+        buttonNames.add("EXIT");
+
+        mmainMenu = new UniversalMenu(getWidth(), getHeight(),buttonNames, mouseAction);
         api = new API(GameType.USER);
         snakes = api.getSnakesInformation();
         bonuses = api.getBonusesInformation();
@@ -129,10 +137,16 @@ public class Game extends Canvas implements Runnable {
                 g.drawString("PRESS UP TO START NEW GAME", 100, 120);
             }
         }else{
+            mmainMenu.render(g);
+            if (mmainMenu.getButtonState(0)){
+                gameRunned = true;
+            }
+            /*
             mainMenu.render(g);
             if(mainMenu.getNewGameButtonClickedState()){
                 gameRunned = true;
             }
+            */
         }
 
        // hero.draw(g, x, y);
