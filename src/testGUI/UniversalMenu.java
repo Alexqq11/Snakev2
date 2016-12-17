@@ -18,6 +18,7 @@ public class UniversalMenu {
     private String header;
     private Color headerColor;
     private Font headerFont;
+    private double widthPersentage = 0.4;
     private boolean componentsAreEnabled = false;
 
     public void setBackgroundColor(Color color) {this.backgroundColor = color;}
@@ -29,7 +30,9 @@ public class UniversalMenu {
     public void setHeaderFont(Font font) {
         this.headerFont = font;
     }
-
+    public void setWidthPersentage(int persent){
+        this.widthPersentage = persent / 100.0;
+    }
     private Point calculateButtonsPosition() {
         int x = (parentWidth - 260) / 2;
         int y = parentHeight / 16;
@@ -37,7 +40,7 @@ public class UniversalMenu {
 
     }
 
-    protected UniversalMenu(int parentWidth, int parentHeight, LinkedList<String> buttonsNames, Game.MouseAction mouseAction) {
+    public UniversalMenu(int parentWidth, int parentHeight, LinkedList<String> buttonsNames, Game.MouseAction mouseAction) {
         this.parentWidth = parentWidth;
         this.parentHeight = parentHeight;
         //this.g = drawer;
@@ -60,7 +63,7 @@ public class UniversalMenu {
         menuButtons = new LinkedList<>();
         int startOffset = 0;
         for (int i = 0; i < buttonsNames.size(); i++){
-            menuButtons.add(new MenuButton(startPoint.x, startPoint.y + OffsetOY * startOffset , (int)(0.4*parentWidth), OffsetOY * 2 , buttonsNames.get(i), mouseAction));
+            menuButtons.add(new MenuButton(startPoint.x, startPoint.y + OffsetOY * startOffset , (int)(widthPersentage*parentWidth), OffsetOY * 2 , buttonsNames.get(i), mouseAction));
             startOffset += 4;
         }
         /*

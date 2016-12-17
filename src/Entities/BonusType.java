@@ -9,4 +9,5 @@ public enum BonusType {
     CANDY,
     MUSHROOM,
     WALL
+
 }
